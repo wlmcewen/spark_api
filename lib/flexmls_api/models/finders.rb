@@ -27,7 +27,7 @@ module FlexmlsApi
       private
 
       def find_every(options)
-        collect(connection.get("/#{element_name}", options))
+        connection.get("/#{element_name}", options){ |results| collect(results) }
       end
 
       def find_one(options)
@@ -35,8 +35,7 @@ module FlexmlsApi
       end
 
       def find_single(scope, options)
-        resp = connection.get("/#{element_name}/#{scope}", options)
-        new(resp.first)
+        connection.get("/#{element_name}/#{scope}", options){ |results| new(results.first) }
       end
             
     end

@@ -25,9 +25,11 @@ module FlexmlsApi
     def authenticate
       start_time = Time.now
       request_time = Time.now - start_time
+      @connection = nil
       new_session = @authenticator.authenticate
       FlexmlsApi.logger.info("[#{(request_time * 1000).to_i}ms]")
       FlexmlsApi.logger.debug("Session: #{new_session.inspect}")
+      @connection = nil
       new_session
     end
 
@@ -54,6 +56,7 @@ module FlexmlsApi
     # Main connection object for running requests.  Bootstraps the Faraday abstraction layer with 
     # our client configuration.
     def connection(force_ssl = false)
+      return @connection unless @connection.nil?
       opts = {
         :headers => headers
       }
@@ -65,11 +68,12 @@ module FlexmlsApi
         opts[:url] = @endpoint.sub /^https:/, "http:"
       end
       conn = Faraday::Connection.new(opts) do |builder|
-        builder.adapter Faraday.default_adapter
+#        builder.adapter Faraday.default_adapter
+        builder.use Faraday::Adapter::Typhoeus
         builder.use FlexmlsApi::FaradayExt::FlexmlsMiddleware
       end
       FlexmlsApi.logger.debug("Connection: #{conn.inspect}")
-      conn
+      @connection = conn
     end
     
     # HTTP request headers for client requests

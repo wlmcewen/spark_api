@@ -26,11 +26,12 @@ begin
     gemspec.add_dependency 'builder', '~> 2.1.2'
     gemspec.add_dependency 'addressable', '~> 2.2.5'
     gemspec.add_dependency 'will_paginate', '~> 3.0.pre2'    
+    gemspec.add_dependency 'typhoeus', '~> 0.2.4'
+    
     # TEST GEMS
     gemspec.add_development_dependency 'rspec', '~> 2.3.0'
     gemspec.add_development_dependency 'webmock', '~> 1.4.0'
     gemspec.add_development_dependency 'jeweler', '~> 1.5.2'
-    gemspec.add_development_dependency 'typhoeus', '~> 0.2.0'
     gemspec.add_development_dependency 'ci_reporter', '= 1.6.3'
     gemspec.add_development_dependency 'rcov', '~> 0.9.9'
   end

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Brandon Hornseth", "Wade McEwen"]
-  s.date = %q{2011-05-26}
+  s.date = %q{2011-05-31}
   s.description = %q{A library for interacting with the flexmls web services.}
   s.email = %q{api-support@flexmls.com}
   s.extra_rdoc_files = [
@@ -53,8 +53,10 @@ Gem::Specification.new do |s|
     "lib/flexmls_api/models/virtual_tour.rb",
     "lib/flexmls_api/multi_client.rb",
     "lib/flexmls_api/paginate.rb",
+    "lib/flexmls_api/parallel.rb",
     "lib/flexmls_api/primary_array.rb",
     "lib/flexmls_api/request.rb",
+    "lib/flexmls_api/response.rb",
     "lib/flexmls_api/version.rb",
     "spec/fixtures/add_note.json",
     "spec/fixtures/agent_shared_note.json",
@@ -113,6 +115,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/multi_client_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",
+    "spec/unit/flexmls_api/parallel_spec.rb",
     "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api/standard_fields_spec.rb",
@@ -147,6 +150,7 @@ Gem::Specification.new do |s|
     "spec/unit/flexmls_api/models/virtual_tour_spec.rb",
     "spec/unit/flexmls_api/multi_client_spec.rb",
     "spec/unit/flexmls_api/paginate_spec.rb",
+    "spec/unit/flexmls_api/parallel_spec.rb",
     "spec/unit/flexmls_api/primary_array_spec.rb",
     "spec/unit/flexmls_api/request_spec.rb",
     "spec/unit/flexmls_api/standard_fields_spec.rb",
@@ -167,10 +171,10 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_runtime_dependency(%q<addressable>, ["~> 2.2.5"])
       s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_runtime_dependency(%q<typhoeus>, ["~> 0.2.4"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<webmock>, ["~> 1.4.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_development_dependency(%q<typhoeus>, ["~> 0.2.0"])
       s.add_development_dependency(%q<ci_reporter>, ["= 1.6.3"])
       s.add_development_dependency(%q<rcov>, ["~> 0.9.9"])
     else
@@ -184,10 +188,10 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<addressable>, ["~> 2.2.5"])
       s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_dependency(%q<typhoeus>, ["~> 0.2.4"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<webmock>, ["~> 1.4.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_dependency(%q<typhoeus>, ["~> 0.2.0"])
       s.add_dependency(%q<ci_reporter>, ["= 1.6.3"])
       s.add_dependency(%q<rcov>, ["~> 0.9.9"])
     end
@@ -202,10 +206,10 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<addressable>, ["~> 2.2.5"])
     s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+    s.add_dependency(%q<typhoeus>, ["~> 0.2.4"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<webmock>, ["~> 1.4.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-    s.add_dependency(%q<typhoeus>, ["~> 0.2.0"])
     s.add_dependency(%q<ci_reporter>, ["= 1.6.3"])
     s.add_dependency(%q<rcov>, ["~> 0.9.9"])
   end

@@ -4,6 +4,7 @@ module FlexmlsApi
   # HTTP request wrapper.  Performs all the api session mumbo jumbo so that the models don't have to.
   module Request
     include PaginateResponse
+    include Parallel
     # Perform an HTTP GET request
     # 
     # * path - Path of an api resource, excluding version and endpoint (domain) information
@@ -12,8 +13,8 @@ module FlexmlsApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
-    def get(path, options={})
-      request(:get, path, nil, options)
+    def get(path, options={}, &block)
+      request(:get, path, nil, options, &block)
     end
 
     # Perform an HTTP POST request
@@ -25,8 +26,8 @@ module FlexmlsApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
-    def post(path, body={}, options={})
-      request(:post, path, body, options)
+    def post(path, body={}, options={}, &block)
+      request(:post, path, body, options, &block)
     end
 
     # Perform an HTTP PUT request
@@ -38,8 +39,8 @@ module FlexmlsApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
-    def put(path, body={}, options={})
-      request(:put, path, body, options)
+    def put(path, body={}, options={}, &block)
+      request(:put, path, body, options, &block)
     end
 
     # Perform an HTTP DELETE request
@@ -50,14 +51,14 @@ module FlexmlsApi
     #   Hash of the json results as documented in the api.
     # :raises:
     #   FlexmlsApi::ClientError or subclass if the request failed.
-    def delete(path, options={})
-      request(:delete, path, nil, options)
+    def delete(path, options={}, &block)
+      request(:delete, path, nil, options, &block)
     end
     
     private
 
     # Perform an HTTP request (no data)
-    def request(method, path, body, options)
+    def request(method, path, body, options, &block)
       unless authenticated?
         authenticate
       end
@@ -89,16 +90,13 @@ module FlexmlsApi
         FlexmlsApi.logger.error("Authentication failed or server is sending us expired tokens, nothing we can do here.")
         raise
       end
-      results = response.body.results
-      paging = response.body.pagination
-      unless paging.nil?
-        if request_opts[:_pagination] == "count"
-          results = paging['TotalRows']
-        else
-          results = paginate_response(results, paging)
-        end
+      if in_parallel?
+        @parallel_responses << Response.new(response, request_opts, &block)
+      else
+        # process immediately
+        Response.new(response, request_opts, &block).process
       end
-      results
+      
     end
     
   end

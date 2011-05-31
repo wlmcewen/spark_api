@@ -48,7 +48,7 @@ module FlexmlsApi
       end
       
       def self.get(options={})
-        collect(connection.get(path, options))
+        connection.get(path, options){ |results| collect(results) }
       end
 
       def self.first(options={})
@@ -56,7 +56,7 @@ module FlexmlsApi
       end
 
       def self.count(options={})
-        connection.get(path, options.merge({:_pagination=>"count"}))
+        connection.get(path, options.merge({:_pagination=>"count"})){ |results| results[0] }
       end
       
       def method_missing(method_symbol, *arguments)
